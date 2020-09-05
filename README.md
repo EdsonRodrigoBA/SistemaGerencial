@@ -1,2 +1,3 @@
 # SistemaGerencial
-Gerenciamento de produtos , arquitetura em camadas com padrao repository
+Gerenciamento de produtos , Usuaros.
+Arquitetura em camadas com padrao repository e injeção de dependencia.
