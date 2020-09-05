@@ -1,0 +1,61 @@
+﻿
+@model  GerenciamentoProdutos.UI.ViewModels.ContaViewModel.LoginVM
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+<div class="row">
+
+
+    <form action="@Url.Action("Login")" method="post" class="col-sm-12 col-md-6">
+        <div class="form-group">
+            <label>E-mail:</label>
+            @Html.TextBoxFor(Model => Model.Email, new { @class = "form-control", autofocus = "" })
+            <small>
+                @Html.ValidationMessageFor(Model => Model.Email, null, new { @class = "text-danger" })
+
+            </small>
+
+        </div>
+
+
+
+        <div class="form-group">
+            <label>Senha:</label>
+            @Html.PasswordFor(Model => Model.Senha, new { @class = "form-control" })
+            <small>
+                @Html.ValidationMessageFor(Model => Model.Senha, null, new { @class = "text-danger" })
+
+            </small>
+
+        </div>
+
+        <div class="form-group form-check">
+
+            @Html.CheckBoxFor(Model => Model.PermanecerLogado, new { @class = "form-check-input" })
+            @Html.LabelFor(Model => Model.PermanecerLogado)
+
+        </div>
+
+
+        <div class="form-group">
+
+            <button class="btn btn-outline-primary">Entrar</button>
+
+            @*<a href="@Url.Action("Index", "Home")" class="btn btn-outline-warning">Cancelar</a>*@
+        </div>
+
+    </form>
+</div>
+
+@*carregar o Jquery do Layou com o nome da seção Scripts*@
+@section Scripts{
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    @*evitar que faca uma requisicao ao servidor para validar os dados.*@
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    @*Mudar Cor dos Elementos HTMl ao da um Erro na tela*@
+    <script src="~/Scripts/bootstrap.validade.js"></script>
+}

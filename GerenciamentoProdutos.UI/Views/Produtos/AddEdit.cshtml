@@ -1,0 +1,90 @@
+﻿@model GerenciamentoProdutos.UI.ViewModels.ProdutoViewModel.ProdutoAddEditVM
+
+@{
+    ViewBag.title = $"{(Model.Id == 0 ? "Adcionar Produto" : "Editar Produto")}";
+}
+<h2>@ViewBag.title</h2>
+<form action="/Produtos/AddEdit" method="post">
+
+
+    <div class="form-group">
+        <label>
+            Nome:
+        </label>
+        @*<input type="text" name="descricao" id="txtNome" class="form-control" value="@Model.descricao" autofocus />*@
+        @Html.TextBoxFor(m => m.descricao, new { @class = "form-control", autofocus = "" })
+        <small>
+            @Html.ValidationMessageFor(Model => Model.descricao, null, new { @class = "text-danger" })
+        </small>
+    </div>
+
+
+    <div class="form-group">
+        <label>
+            Preco:
+        </label>
+     
+        @Html.TextBoxFor(m => m.preco, new { @class = "form-control" })
+        <small>
+            @Html.ValidationMessageFor(Model => Model.preco, null, new { @class = "text-danger" })
+        </small>
+    </div>
+    <div class="form-group">
+        <label>
+            Tipo:
+        </label>
+
+        @Html.DropDownListFor(Model => Model.TipoProdutoId,
+               new SelectList(ViewBag.tipos, "Id", "ds_tipoproduto"), "Selecione o Tipo do Produto", new { @class= "form-control"})
+        
+        @*<select name="TipoProdutoId" class="form-control">
+            <option value="">Selecione o Tipo do Produto</option>
+            @foreach (var tipos in ViewBag.tipos)
+            {
+                <option @(tipos.Id == Model.TipoProdutoId ? "selected" : "") value="@tipos.Id">@tipos.ds_tipoproduto</option>
+            }
+
+
+
+        </select>*@
+
+        
+        <small>
+            @Html.ValidationMessageFor(Model => Model.TipoProdutoId, null, new { @class = "text-danger" })
+        </small>
+    </div>
+
+    <div class="form-group">
+        <label>
+            Quantidade:
+        </label>
+        @Html.TextBoxFor(m => m.quantidade, new { @class = "form-control",  })
+        <small>
+            @Html.ValidationMessageFor(Model => Model.quantidade, null, new { @class = "text-danger" })
+        </small>
+    </div>
+
+    <div>
+        @Html.ValidationSummary(true)
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Salvar" class="btn btn-outline-success" />
+        <a href="@Url.Action("Index")" class="btn btn-outline-danger">   Cancelar </a>
+    </div>
+
+
+
+
+</form>
+
+@*carregar o Jquery do Layou com o nome da seção Scripts*@
+@section Scripts{
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    @*evitar que faca uma requisicao ao servidor para validar os dados.*@
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    @*Mudar Cor dos Elementos HTMl ao da um Erro na tela*@
+<script src="~/Scripts/bootstrap.validade.js"></script>
+}

@@ -1,0 +1,124 @@
+﻿@using GerenciamentoProdutos.UI.ViewModels.ProdutoViewModel
+@{ 
+    ViewBag.title = "Pagina Inicial";
+}
+<h2>Listagem de Produtos</h2>
+
+<div>
+
+    <a href="@Url.Action("AddEdit")" class="btn btn-outline-success"><i class="fas fa-plus"></i> Novo Produto</a>
+</div>
+<div class="table-responsive mt-3">
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th>
+                    Descrição
+                </th>
+                <th>
+                    Preço
+                </th>
+                <th>
+                    Tipo
+                </th>
+
+                <th>
+                    qtd
+                </th>
+
+                <th>
+                    data
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+
+        <tbody>
+            @foreach (ProdutoIndexVM produtos in Model)
+            {
+                <tr id="produto-@produtos.Id">
+
+                    <td>@produtos.descricao</td>
+                    <td>@produtos.preco.ToString("c")</td>
+                    <td>@produtos.tipoproduto</td>
+                    <td>@produtos.quantidade</td>
+                    <td>@produtos.dtCadastro</td>
+                    
+                    <td class="btn-group">
+
+                        <a href="@Url.Action("AddEdit", new { id = produtos.Id})" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i> Editar</a>
+                        <button onclick="excluirProd('@produtos.descricao', @produtos.Id)" class="btn btn-outline-danger btn-sm"><i class="fas fa-trash"></i> Excluir</button>
+
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="modal" tabindex="-1" role="dialog" id="delModal" data-id="0">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Excluir</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja excluir este Produto  <strong><span id="nomeProdutoModal"></span> </strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" onclick="ConfirmeDelProd()" class="btn btn-primary" id="confirmeDelModal">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+    <script>
+        function excluirProd(nome, id) {
+            //let resp = confirm('Deseja excluir o Produto ' + nome + ' ?')
+
+            //if (resp) {
+            //    ConfirmeDelProd(id);
+            //    console.log(id);
+            //}
+            $('#nomeProdutoModal').text(nome);
+            $('#delModal').data('id', id).modal('show');
+        }
+
+      
+
+        function ConfirmeDelProd() {
+            //XLMLHTTREQUEST
+             var id = $('#delModal').data('id');
+            var xhr = new XMLHttpRequest();
+            const url = '/Produtos/DelProdu/' + id;
+
+            xhr.onreadystatechange = function () {
+                 $('#delModal').data('id', '0').modal('hide');
+                if (this.readyState === 4 && this.status === 404) {
+                    //alert("Produto não localizado");
+                    toastr.error('Produto não localizado', 'Erro')
+                }
+
+                if (this.readyState === 4 && this.status === 200) {
+                    let tr = document.querySelector('#produto-' + id)
+                    if (tr != null) {
+                        tr.remove();
+                        toastr.success("Produto excluido com sucesso.", 'Sucesso');
+                    }
+
+                }
+            }
+            xhr.open('get', url)
+            xhr.send();
+            console.log(url);
+
+        }
+
+    </script>
